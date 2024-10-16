@@ -1,0 +1,48 @@
+#crear proyecto nuevo
+composer create-project laravel/laravel example-app
+
+# para crear una tabla migracion
+php artisan make:migration create_nombre_table
+
+#regresa un paso atras, sobre las migraciones
+php artisan migrate:rollback
+
+# mandamos las tablas creadas en codigo a la BD
+php artisan migrate
+
+# agrega uno a uno las migraciones, cuando queremos agregar un nuevo campo a una tabla @se recomienda ejecutar cuando esta en desarrollo el proyecto
+php artisan migrate:fresh
+
+# agregar migracion o tabla a la BD, (me crea un archivo en la carpeta migrations)
+php artisan make:migration NombreTabla 
+
+# una vex creada las tablas en migrations, las mandamos al la BD
+php artisan migrate
+
+#agregar campo a tabla sin borrar informacion (es como un alter table)
+php artisan make:migration add_nombreColumna_to_NombreTabla_table
+
+
+
+#crear un model (el modelo se debe de crar por ejemplo tenemos una tabla "cursos" el modelo es Curso)
+#si creo un modelo 'User' entonces la tabla se debe de llamar 'users'
+php artisan make:model NameModel
+
+#elimina todas la tablas de la BD
+php artisan migrate:reset
+
+# crear un seeder 
+php artisan make:seeder NombreSeeder 
+
+#guardar datos desde seeeder
+php artisan db:seed 
+
+#crear un factory, sirve para llenar las tablas de la BD con info de relleno de prueba
+php artisan make:factory NombreFactory (--model=NombreModelo)opcionalllll
+
+
+
+
+#COMANDO PARA MOSTRAR LOS PDF O IMAGENES EN LA CARPETA STORAGE
+php artisan storage:link
+
