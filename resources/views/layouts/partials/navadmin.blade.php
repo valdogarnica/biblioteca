@@ -1,7 +1,7 @@
 <header class="p-1 text-white">
   <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/home">
+      <a class="navbar-brand" href="/admin/home">
         <img src="{{ asset('images/loboss.png') }}" alt="Logo">LOBOS BLANCOS UPVT
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">

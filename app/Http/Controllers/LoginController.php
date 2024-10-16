@@ -34,8 +34,18 @@ class LoginController extends Controller
         return $this->authenticated($request, $user);
     }
 
-    protected function authenticated(Request $request, $user) 
-    {
-        return redirect()->route('home.index');
+    protected function authenticated(Request $request, $user) {
+        $roleId = $user->id_rol;
+        // Verificar el id_rol y redirigir a la vista correspondiente
+        if ($roleId == 1) {
+            // Redirigir a la vista de administrador
+            return redirect()->route('admin.home');
+        } elseif ($roleId == 2) {
+            // Redirigir a la vista de usuarios
+            //return redirect()->route('user.index');
+            return redirect()->route('home.index');
+        }
+        //return redirect()->route('home.index');
+        //return redirect()->route('.index');
     }
 }
