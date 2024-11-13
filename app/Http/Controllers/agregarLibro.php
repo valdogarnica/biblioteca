@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Autor;
+use App\Models\categoria;
 use Illuminate\Http\Request;
 use App\Models\Libro;
 use App\Models\editorial;
@@ -36,6 +37,7 @@ class agregarLibro extends Controller
                 //$libro->autores()->attach($validatedData['autores']);
                 // Guardar relaciones en la tabla pivot
                 $libro->autores()->sync($request->input('autores'));
+                $libro->categoria()->sync($request->input('categorias'));
                 //MANDA LA RESPUESTA AL BACKEND
                 return response()->json(['success' => true, 'message' => 'El libro se ha subido correctamente'], 200);
 
@@ -45,12 +47,13 @@ class agregarLibro extends Controller
         }
         $editorials = editorial::all();
         $autores = Autor::all();
-        return view('agregar_libro', compact('editorials', 'autores'));
+        $categorias = categoria::all();
+        return view('agregar_libro', compact('editorials', 'autores', 'categorias'));
     }
 
     function agregar_editorial(Request $request){
         $editorial = new editorial();
-        $editorial->nombre_editorial = $request->autor;
+        $editorial->nombre_editorial = $request->editorial;
         $editorial->save();
         return response()->json(['success' => true, 'message' => 'Editorial Guardada Exitosamente!'], 200);
     }

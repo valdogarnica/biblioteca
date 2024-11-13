@@ -144,6 +144,53 @@
 </head>
 <body>
     <main> 
+        <!-- Modal editorial-->
+        <div class="modal fade" id="editorialModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Agregar Editorial</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nombre">Nombre Editorial:</label>
+                            <input type="text" name="nombreEditorial" id="nombreEditorial" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary" onclick="agregarEditorial()">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function agregarEditorial(){
+                const nombreEditorial = document.getElementById('nombreEditorial').value;
+            }
+        </script>
+        <!-- Modal autor-->
+        <div class="modal fade" id="autorModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="nombre">Nombre Autor:</label>
+                            <input type="text" name="nombreAutor" id="nombreAutor" class="form-control">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">
                 <h1>AGREGAR LIBRO</h1>
@@ -156,11 +203,28 @@
                         <input type="text" id="titulo" name="titulo" class="form-control" required>
                     </div>
                     <div class="form-group">
-                        <label for="editorial">EDITORIAL:</label>
+                        <label for="editorial">EDITORIAL: <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editorialModal"><i class="fa-solid fa-plus"></i></button></label>
                         <select id="editorial" name="editorial" class="form-control" required>
                             <option value="">Selecciona Editorial</option>
                             @foreach($editorials as $editorial)
                                 <option value="{{ $editorial->id_editorial }}">{{ $editorial->nombre_editorial }}</option>
+                            @endforeach
+                        </select>
+                    </div> 
+                    <!--div class="form-group">
+                        <label for="editorial">Categoria: <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editorialModal"><i class="fa-solid fa-plus"></i></button></label>
+                        <select id="editorial" name="editorial" class="form-control" required>
+                            <option value="">Selecciona Categoria</option>
+                            @foreach($categorias as $categoria)
+                                <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre_categoria }}</option>
+                            @endforeach
+                        </select>
+                    </div-->
+                    <div class="form-group">
+                        <label for="categorias">CATEGORIA: <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editorialModal"><i class="fa-solid fa-plus"></i></button>  <p>(Selecciona uno o varias Cateogorias)</p> </label>
+                        <select id="categorias" name="categorias[]" class="form-control" multiple required>
+                            @foreach($categorias as $categoria)
+                                <option value="{{ $categoria->id_categoria }}">{{ $categoria->nombre_categoria }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -173,7 +237,7 @@
                         <input type="number" id="paginas" class="form-control" name="paginas">
                     </div>
                     <div class="form-group">
-                        <label for="autores">AUTORES: <p>(Selecciona uno o varios autores)</p> </label>
+                        <label for="autores">AUTORES: <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#autorModal"><i class="fa-solid fa-plus"></i></button>  <p>(Selecciona uno o varios autores)</p> </label>
                         <select id="autores" name="autores[]" class="form-control" multiple required>
                             @foreach($autores as $autor)
                                 <option value="{{ $autor->id_autor }}">{{ $autor->nombre_autor }} {{ $autor->apellido }}</option>
@@ -215,6 +279,13 @@
             });
         </script>
         <script>
+            $(document).ready(function() {
+                $('#categorias').select2({
+                    placeholder: 'Selecciona uno o varias categorias'
+                });
+            });
+        </script>
+        <script>
             function addAuthor() {
                 const autoresContainer = document.getElementById('autores-container');
                 const newAuthor = document.createElement('div');
@@ -247,7 +318,7 @@
                 
                 // Obtener los IDs de los autores seleccionados
                 let autores = $('#autores').val(); // Usamos jQuery para obtener los autores seleccionados
-                
+                let categorias = $('#categorias').val();
                 // Obtener archivos
                 let imagen = document.getElementById('imagen').files[0];
                 let pdf = document.getElementById('pdf').files[0];
@@ -276,6 +347,10 @@
                 // Agregar los autores seleccionados al FormData
                 autores.forEach(function(autor) {
                     formData.append('autores[]', autor);
+                });
+
+                categorias.forEach(function(categoria) {
+                    formData.append('categorias[]', categoria);
                 });
         
                 // Agregar el token CSRF de Laravel

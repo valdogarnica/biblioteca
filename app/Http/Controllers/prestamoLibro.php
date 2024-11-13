@@ -34,7 +34,7 @@ class prestamoLibro extends Controller
         }
         return response()->json(['success' => false, 'message' => 'Error, el Libro No se puede Prestar por la fecha de reserva es menor'], 200);
         
-    }
+    } 
 
     function obtener_fecha_libro($id_libro){
         $fecha = DB::table('libros')

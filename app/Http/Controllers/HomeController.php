@@ -15,22 +15,19 @@ class HomeController extends Controller
         $libros = Libro::all();
         return view('home.index', compact('libros'));
     }
-
+ 
     function show($id){
         //$autores = LibroAutor::where('id_libro', $id)->firstOrFail();
         $libro = Libro::where('id_libro', $id)->firstOrFail();
         //$autores = $libro->autores; 
-        $autores = DB::table('relacion_libro_autor')
-        ->join('autor', 'relacion_libro_autor.id_autor', '=', 'autor.id_autor')
-        ->where('relacion_libro_autor.id_libro', $id)
-        ->select('autor.nombre_autor', 'autor.apellido')
-        ->get();
+        $autores = $this->autores($id);
+        $categorias = $this->categorias($id);
         //dd($autores);
-        $prestamo = $this->obtener_hora_por_idlibro($id);
-        return view('prestamo_libro', compact('libro', 'autores', 'prestamo'));
+        $prestamo = $this->prestamo($id);
+        return view('prestamo_libro', compact('libro', 'autores', 'prestamo', 'categorias'));
     }
 
-    function obtener_hora_por_idlibro($id){
+    function prestamo($id){
         /*$horaLimite = DB::table('prestamos')
         ->join('relacion_prestamo_libro', 'prestamos.id_prestamo', '=', 'relacion_prestamo_libro.id_prestamo')
         ->where('relacion_prestamo_libro.id_libro', $id)
@@ -44,5 +41,24 @@ class HomeController extends Controller
         ->first();
 
         return $prestamo;
+    }
+
+    public function categorias($id){
+        $categorias = DB::table('relacion_libro_categoria')
+        ->join('categorias', 'relacion_libro_categoria.id_categoria', '=', 'categorias.id_categoria')
+        ->where('relacion_libro_categoria.id_libro', $id)
+        ->select('categorias.nombre_categoria')
+        ->get();
+        return $categorias;
+    }
+
+    public function autores($id){
+        $autores = DB::table('relacion_libro_autor')
+        ->join('autor', 'relacion_libro_autor.id_autor', '=', 'autor.id_autor')
+        ->where('relacion_libro_autor.id_libro', $id)
+        ->select('autor.nombre_autor', 'autor.apellido')
+        ->get();
+
+        return $autores;
     }
 }

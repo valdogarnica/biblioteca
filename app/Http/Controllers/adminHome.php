@@ -7,17 +7,12 @@ use App\Models\prestamos;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+ 
 class adminHome extends Controller
 {
     public function show(){
         $prestamos = $this->prestamos();
-        $librosPrestados = $this->librosPrestados();
-        $configuracion = $this->fechaConfiguracion();
-        foreach ($librosPrestados as $libro) {
-            $libro->fecha_estimada_entrega = $this->fechaEstimada($configuracion, $libro->fecha_realiza_prestamo);
-        }
-        return view('home.admin', compact('prestamos', 'librosPrestados'));
+        return view('home.admin', compact('prestamos'));
     }
     public function recogerLibro($id){
         $prestamo = prestamos::find($id);
@@ -57,49 +52,10 @@ class adminHome extends Controller
 
     }
 
-    public function librosPrestados(){
-        $librosPrestados = DB::table('prestamos as p')
-        ->join('users as u', 'p.matricula', '=', 'u.username')
-        ->join('relacion_prestamo_libro as rpl', 'p.id_prestamo', '=', 'rpl.id_prestamo')
-        ->join('libros as l', 'rpl.id_libro', '=', 'l.id_libro')
-        ->select(
-            'p.fecha_realiza_prestamo_completa',
-            'p.fecha_realiza_prestamo',
-            'p.recogio_libro',
-            'p.id_prestamo',
-            'p.estado_prestamo',
-            'p.hora_limite_recoger_libro',
-            'u.username',
-            'u.name',
-            'l.nombre_libro',
-            'l.descripcion',
-            'l.imagen',
-            'l.isbn'
-        )
-        ->where('p.estado_prestamo', '=', 'Libro Prestado')
-        ->where('p.recogio_libro', '=', 1)
-        ->where('p.devolvio_libro', '=', 0)
-        ->get();
 
-        return $librosPrestados;
-    }
 
-    public function fechaConfiguracion(){
-        $configuracion = configuracion::select('dias_prestamo_libro', 'hora_devolucion_libro')->first();
-        return $configuracion;
-    }
+    
 
-    public function fechaEstimada($configuracion, $fechaRealizaPrestamo){
-        // Convertir la fecha a un objeto Carbon
-        $fecha = Carbon::parse($fechaRealizaPrestamo);
-
-        // Sumar los días a la fecha
-        $fechaEstimadaDevolucion = $fecha->addDays($configuracion->dias_prestamo_libro);
-        // Sumar las horas a la fecha
-        $fechaEstimadaDevolucion->setTime($configuracion->hora_devolucion_libro, 0, 0);
-
-        return $fechaEstimadaDevolucion->format('d-m-Y H:i:s'); // Devuelve la fecha formateada
-    }
 
     public function regresarLibro($idPrestamo){
         $prestamo = prestamos::find($idPrestamo);

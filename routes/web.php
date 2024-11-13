@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\adminHome;
+use App\Http\Controllers\adminPrestamos;
 use App\Http\Controllers\agregarLibro;
 use App\Http\Controllers\mochila;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\inventario;
+use App\Http\Controllers\librosDevueltos;
 use App\Http\Controllers\prestamoLibro;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
@@ -37,7 +40,7 @@ Route::group(['namespace' => 'App\Http\Controllers'], function()
     /**
      * Home Routes
      */
-    //Route::get('/home', 'HomeController@index')->name('home.index');
+    Route::get('/home', 'HomeController@index')->name('home.index');
 
     Route::group(['middleware' => ['guest']], function() {
         /**
@@ -75,15 +78,23 @@ Route::middleware(['admin'])->group(function () {
     Route::post('/agregar/editorial', [agregarLibro::class, 'agregar_editorial']);
     Route::post('/prestamos/{id}/recoger', [adminHome::class, 'recogerLibro'])->name('prestamos.recoger');
     Route::post('/regresar/libro/{id}', [adminHome::class, 'regresarLibro'])->name('regresar.libro');
-});
+    Route::get('/admin/prestamos', [adminPrestamos::class, 'showPrestamos'])->name('admin.prestamos');
+    Route::get('/admin/inventario', [inventario::class, 'libros_todos']);
+    Route::match(['get', 'post'] ,'/admin/get-libro/{id}', [inventario::class, 'get_libro']);
+    Route::match(['get', 'post'] ,'/admin/editar-libro/{id}', [inventario::class, 'editar_libro']);
+    Route::get('/admin/libros/devueltos', [librosDevueltos::class, 'show']);
 
+});
 
 
 
 Route::middleware(['user'])->group(function (){
-    Route::match(['get', 'post'], '/libros/{id}', [HomeController::class, 'show'])->name('libros.show');
+    
     Route::match(['get', 'post'], '/prestamo/libro/{id}', [prestamoLibro::class, 'prestamo_libro'])->name('prestamo.libro');
     Route::match(['get', 'post'], '/mochila/{usuario}', [mochila::class, 'mochila'])->middleware('auth')->name('mochila.show');
     Route::post('/cancelar-reserva/{idPrestamo}', [mochila::class, 'cancelarReserva']);
-    Route::get('/home', [HomeController::class, 'index'])->name('home.index');
+    //Route::get('/home', [HomeController::class, 'index'])->name('home.index');
 });
+
+
+Route::match(['get', 'post'], '/libros/{id}', [HomeController::class, 'show'])->name('libros.show');

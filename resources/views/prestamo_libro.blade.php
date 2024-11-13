@@ -29,7 +29,7 @@
     </style>
 </head>
 <body>
-
+ 
     <!-- Navbar -->
     <!--nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
@@ -61,6 +61,17 @@
                                 
                             </ul>
                         </p>
+                        <p class="card-text">Categorias:
+                            <ul>
+                                @if ($categorias->isNotEmpty())
+                                    @foreach ($categorias as $categoria)
+                                        <li>{{ $categoria->nombre_categoria }}</li>
+                                    @endforeach
+                                @else
+                                    <H6>NO HAY CATEGORIAS</H6>
+                                @endif
+                            </ul>
+                        </p>
                         @auth
                         <div class="d-grid gap-3">
                             <a href="{{ asset('storage/'. $libro->libro_digital) }}">
@@ -85,7 +96,7 @@
             </div>
         </div>
     </div>
-    
+     
     <!-- Modal -->
     <div class="modal fade" id="solicitarLibro" tabindex="-1" role="dialog" aria-labelledby="solicitarLibroTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
