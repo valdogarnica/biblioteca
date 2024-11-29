@@ -24,9 +24,9 @@
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#inventarioInicial">
         Inventario Inicial
     </button>
-    <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#ingresos">
+    <!--button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#ingresos">
         Ingresos
-    </button>
+    </button-->
     <!-- Modal INGRESOS -->
     <div class="modal fade" id="ingresos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
@@ -152,32 +152,31 @@
                                             <table class="table table-striped table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <th class="text-center align-middle">Nombre Libro</th>
                                                         <th class="text-center align-middle">Isbn</th>
-                                                        <th class="text-center align-middle">N.0 Total</th>
-                                                        <th class="text-center align-middle">Prestados</th>
-                                                        <th class="text-center align-middle">Autores</th>
-                                                        <th class="text-center align-middle">Categorias</th>
-                                                        <th class="text-center align-middle">Disponibles</th>
+                                                        <th class="text-center align-middle">Titulo</th>
                                                         <th class="text-center align-middle">Editorial</th>
+                                                        <th class="text-center align-middle">Autores</th>
+                                                        <th class="text-center align-middle">Categoria</th>       
+                                                        <th class="text-center align-middle">Cantidad Sistema</th>
+                                                        <th class="text-center align-middle">Cantidad Fisica</th>
+                                                        <th class="text-center align-middle">Ajuste</th>
                                                         <th class="text-center align-middle">Imagen</th>
-                                                        <th class="text-center align-middle">OPCIONES</th>
+                                                        <th class="text-center align-middle">Observaciones</th>
+                                                        
                                                         
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     @foreach ($libros_todos as $libro)
                                                         <tr>
+                                                            <td class="text-center align-middle">{{ $libro->isbn_libros }}</td>
                                                             <td class="text-center align-middle">{{ $libro->nombre_libro }}</td>
-                                                            <td class="text-center align-middle">{{ $libro->isbn_libros }}
-                                                                <button>#</button>
-                                                            </td>
-                                                            <td class="text-center align-middle">{{ $libro->Suma_Total }}</td>
-                                                            <td class="text-center align-middle">{{ $libro->cantidad_prestada }}</td>
-                                                            <td class="text-center align-middle tam">{{ $libro->autores }}</td>
-                                                            <td class="text-center align-middle tam">{{ $libro->categorias }}</td>
-                                                            <td class="text-center align-middle tam">{{ $libro->Ejemplares_Disponibles }}</td>
                                                             <td class="text-center align-middle">{{ $libro->nombre_editorial }}</td>
+                                                            <td class="text-center align-middle tam">{{ $libro->autores }}</td>
+                                                            <td class="text-center align-middle tam">{{ $libro->categorias }}</td> 
+                                                            <td class="text-center align-middle">{{ $libro->Suma_Total }}</td>
+                                                            <td class="text-center align-middle tam">{{ $libro->Ejemplares_Disponibles }}</td>
+                                                            <td class="text-center align-middle">{{ $libro->cantidad_prestada }}</td>
                                                             <td class="text-center align-middle"><img src="{{ asset('storage/' . $libro->imagen) }}" alt="" width="100" height="100"></td>
                                                             <td class="text-center align-middle">
                                                                 <!-- MODAL EDITAR-->

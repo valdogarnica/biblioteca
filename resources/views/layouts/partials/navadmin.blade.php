@@ -47,15 +47,23 @@
             </a>
           </li>
           <li class="nav-item">
+            <a class="nav-link text-white" href="/admin/ingresos">
+              <i class="fa-solid fa-plus"></i> ingresos
+            </a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link text-white" href="/admin/configuracion">
               <i class="fa-solid fa-gear"></i> CONFIGURACIÓN
             </a>
           </li>
+          
         </ul>
         <ul class="navbar-nav ms-auto">
           @auth
           <li class="nav-item d-flex align-items-center">
-            <a href="" class="btn btn-outline-light me-2"><i class="fa-regular fa-user"></i> Admin: {{auth()->user()->name}}</a>
+            <a href="/admin/my/perfil/{{auth()->user()->name}}" class="btn btn-outline-light me-2">
+              <i class="fa-regular fa-user"></i> Admin: {{auth()->user()->name}}
+            </a>
             <a href="{{ route('logout.perform') }}" class="btn btn-outline-danger me-2"><i class="fa-solid fa-arrow-right-from-bracket"></i> Salir</a>
           </li>
           @endauth
@@ -72,22 +80,7 @@
     </div>
   </nav>
 
-  <!-- Botones añadidos en la parte inferior para dispositivos pequeños -->
-  <div class="text-center mt-1 d-lg-none">
-    <a href="/admin/home" class="btn btn-outline-light mx-2">
-      <i class="fa-solid fa-house"></i> HOME
-    </a>
-    <a href="/admin/libros" class="btn btn-outline-light mx-2">
-      <i class="fa-solid fa-book"></i> LIBROS DEVUELTOS
-    </a>
-    <a href="/admin/agregar-libro" class="btn btn-outline-light mx-2">AGREGAR LIBRO</a>
-    <a href="/admin/prestamos" class="btn btn-outline-light mx-2">
-      <i class="fa-solid fa-handshake"></i> PRÉSTAMOS
-    </a>
-    <a href="/admin/configuracion" class="btn btn-outline-light mx-2">
-      <i class="fa-solid fa-gear"></i> CONFIGURACIÓN
-    </a>
-  </div>
+  
 </header>
 
 <style>

@@ -245,25 +245,24 @@ class inventario extends Controller
     */
 
     public function super_perfect_mega_consulta_convinada_tripe(){
-        $datos = DB::table('vista_libros_disponibles as vls')
-        ->select(
+        $libros = DB::table('vista_libros_disponibles as vls')
+        ->leftJoin('ingresos_suma as i', 'vls.isbn_libros', '=', 'i.isbn')
+        ->select([
             'vls.id_libro',
             'vls.nombre_libro',
             'vls.isbn_libros',
             'vls.imagen',
-            'i.cantidad',
-            'vls.Libros_Agregados',
-            'vls.cantidad_inventario',
-            DB::raw('COALESCE(vls.suma_Total_Libros + i.cantidad, vls.suma_Total_Libros) as Suma_Total'),
+            DB::raw('COALESCE(i.cantidad, 0) AS cantidad'),
+            DB::raw('COALESCE(vls.cantidad_inventario, 0) AS cantidad_inventario_inicial'),
+            DB::raw('COALESCE(vls.cantidad_inventario + COALESCE(i.cantidad, 0), COALESCE(vls.cantidad_inventario, COALESCE(i.cantidad, 0))) AS Suma_Total'),
             'vls.cantidad_prestada',
-            DB::raw('COALESCE(vls.suma_Total_Libros + i.cantidad, vls.suma_Total_Libros) - vls.cantidad_prestada as Ejemplares_Disponibles'),
+            DB::raw('COALESCE(vls.cantidad_inventario + COALESCE(i.cantidad, 0), COALESCE(vls.cantidad_inventario, COALESCE(i.cantidad, 0))) - (vls.cantidad_prestada) AS Ejemplares_Disponibles'),
             'vls.nombre_editorial',
             'vls.autores',
-            'vls.categorias'
-        )
-        ->leftJoin('ingresos_suma as i', 'vls.isbn_libros', '=', 'i.isbn')
+            'vls.categorias',
+        ])
         ->get();
-
-        return $datos;
+        return $libros;
     }
+    
 }
