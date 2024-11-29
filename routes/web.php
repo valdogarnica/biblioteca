@@ -5,6 +5,7 @@ use App\Http\Controllers\adminPrestamos;
 use App\Http\Controllers\agregarLibro;
 use App\Http\Controllers\mochila;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ingresosController;
 use App\Http\Controllers\inventario;
 use App\Http\Controllers\librosDevueltos;
 use App\Http\Controllers\prestamoLibro;
@@ -83,6 +84,7 @@ Route::middleware(['admin'])->group(function () {
     Route::match(['get', 'post'] ,'/admin/get-libro/{id}', [inventario::class, 'get_libro']);
     Route::match(['get', 'post'] ,'/admin/editar-libro/{id}', [inventario::class, 'editar_libro']);
     Route::get('/admin/libros/devueltos', [librosDevueltos::class, 'show']);
+    Route::get('/admin/ingresos', [ingresosController::class, 'ingresos']);
 
 });
 

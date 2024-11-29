@@ -248,10 +248,10 @@
                         <label for="descripcion">DESCRIPCIÓN:</label>
                         <textarea id="descripcion" name="descripcion" class="form-control" placeholder="Breve Descripción"></textarea>
                     </div>
-                    <div class="form-group">
+                    <!--div class="form-group">
                         <label for="existencia">Libros en Existencia</label>
                         <input type="number" name="existencia" id="existencia" class="form-control" placeholder="Agrega la Cantidad de Libros en Existencia" required>
-                    </div>
+                    </div-->
                     <div class="form-group">
                         <label for="Imagen" >Agrega Imagen</label>
                         <input type="file" name="imagen" id="imagen">
@@ -313,7 +313,7 @@
                 let isbn = document.getElementById('isbn').value;
                 let paginas = document.getElementById('paginas').value;
                 let descripcion = document.getElementById('descripcion').value;
-                let existencia = document.getElementById('existencia').value;
+                //let existencia = document.getElementById('existencia').value;
                 let editorial = document.getElementById('editorial').value;
                 
                 // Obtener los IDs de los autores seleccionados
@@ -324,7 +324,7 @@
                 let pdf = document.getElementById('pdf').files[0];
 
                 // Validar que todos los campos estén llenos
-                if (!titulo || !isbn || !paginas || !descripcion || !existencia || !editorial || autores.length === 0 || !imagen || !pdf) {
+                if (!titulo || !isbn || !paginas || !descripcion || !editorial || autores.length === 0 || !imagen || !pdf) {
                     Swal.fire({
                         icon: "warning",
                         title: "Campos Vacíos",
@@ -339,7 +339,7 @@
                 formData.append('isbn', isbn);
                 formData.append('paginas', paginas);
                 formData.append('descripcion', descripcion);
-                formData.append('existencia', existencia);
+                //formData.append('existencia', existencia);
                 formData.append('editorial', editorial);
                 formData.append('imagen', imagen);
                 formData.append('pdf', pdf);
@@ -355,7 +355,7 @@
         
                 // Agregar el token CSRF de Laravel
                 formData.append('_token', '{{ csrf_token() }}');
-        
+                
                 // Hacer la petición fetch al backend
                 try {
                     let response = await fetch("{{ route('agregar.libro') }}", {
